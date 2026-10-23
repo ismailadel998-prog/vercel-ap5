@@ -1,0 +1,1017 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Additional Practice · Pages 27–28, 31–34</title>
+<style>
+  :root{
+    --navy:#0d1f5c; --green:#5cb947; --green-dk:#3f9b34; --boxgreen:#e6f2dc; --blue:#1d6fb8;
+    --ink:#3a3a3a; --grey:#6b6b6b;
+    --pink:#f7bec2; --purple:#b9a2cf; --sky:#a6dbf6; --lime:#d8e8c1;
+    --ok:#1f8a3b; --bad:#c62828;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;background:#e9ecef;color:var(--ink);
+    font-family:"Myriad Pro","Segoe UI",Calibri,"Helvetica Neue",Arial,sans-serif;-webkit-text-size-adjust:100%}
+
+  /* ---------- toolbar (outside the textbook page) ---------- */
+  .toolbar{position:sticky;top:0;z-index:20;background:#fff;border-bottom:1px solid #cfd6de;
+    box-shadow:0 2px 6px rgba(0,0,0,.06)}
+  .toolbar-in{max-width:960px;margin:0 auto;padding:10px 16px;display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px}
+  .tb-title{font-weight:700;color:var(--navy);font-size:17px;white-space:nowrap}
+  .prog{flex:1 1 220px;min-width:200px}
+  .prog-label{font-size:14px;color:#444;margin-bottom:4px}
+  .prog-track{height:12px;background:#e3e8ee;border-radius:6px;overflow:hidden}
+  .prog-fill{height:100%;width:0;background:var(--green);transition:width .25s}
+  .btns{display:flex;gap:8px;flex-wrap:wrap}
+  .btn{font:inherit;font-size:16px;font-weight:600;min-height:46px;padding:0 18px;border-radius:8px;cursor:pointer;
+    border:2px solid var(--navy);background:#fff;color:var(--navy)}
+  .btn.primary{background:var(--navy);color:#fff}
+  .btn:disabled{opacity:.45;cursor:not-allowed}
+  .btn:focus-visible{outline:3px solid #f2b400;outline-offset:2px}
+  .status{width:100%;font-size:14px;color:#555;min-height:18px}
+  .status.err{color:var(--bad)}
+
+  /* ---------- results summary ---------- */
+  .summary{max-width:960px;margin:14px auto 0;padding:0 16px}
+  .summary .card{background:#fff;border:2px solid var(--green);border-radius:10px;padding:14px 18px;font-size:17px}
+  .summary .score{font-size:24px;font-weight:700;color:var(--navy)}
+
+  /* ---------- textbook page ---------- */
+  .wrap{padding:16px 16px 40px}
+  .page{position:relative;max-width:900px;margin:0 auto;background:#fdfdfd;
+    box-shadow:0 2px 14px rgba(0,0,0,.18);padding:0 58px 0 34px;overflow:hidden}
+  .page::before{content:"";position:absolute;left:0;right:0;top:0;height:14px;background:var(--navy)}
+  .page::after{content:"";position:absolute;left:0;right:0;bottom:0;height:14px;background:var(--navy)}
+  .edge{position:absolute;top:14px;bottom:14px;right:0;width:26px;background:var(--green)}
+  .inner{padding:30px 0 34px}
+
+  .namerow{display:flex;align-items:flex-start;gap:10px;font-size:16px;color:#555}
+  .namerow label{padding-top:12px}
+  .namerow label{white-space:nowrap}
+  .line-input{border:0;border-bottom:1.5px solid #9a9a9a;background:transparent;font:inherit;font-size:19px;
+    padding:4px 4px 2px;min-height:38px;color:#111;border-radius:0}
+  .line-input:focus{outline:none;border-bottom-color:var(--blue);background:#f2f7fd}
+  .name-wrap{position:relative;flex:1 1 auto;min-width:150px}
+  #studentName{width:100%}
+  #studentClass{width:110px;font:inherit;font-size:18px;min-height:40px;border:0;border-bottom:1.5px solid #9a9a9a;background:transparent;color:#111;border-radius:0;cursor:pointer}
+  #studentClass:focus{outline:none;border-bottom-color:var(--blue);background:#f2f7fd}
+  .suggest{position:absolute;left:0;right:0;top:100%;z-index:30;background:#fff;border:1.5px solid #9fb4cc;border-radius:8px;
+    box-shadow:0 8px 24px rgba(0,0,0,.15);margin-top:4px;max-height:340px;overflow:auto;display:none}
+  .suggest.show{display:block}
+  .suggest button{display:flex;justify-content:space-between;align-items:center;gap:10px;width:100%;text-align:left;font:inherit;font-size:17px;
+    min-height:48px;padding:8px 14px;border:0;border-bottom:1px solid #eef1f4;background:#fff;color:#222;cursor:pointer}
+  .suggest button:last-child{border-bottom:0}
+  .suggest button.active,.suggest button:hover{background:#e8f1fb}
+  .suggest .tag{flex:none;font-size:13px;font-weight:700;color:#fff;background:var(--navy);border-radius:10px;padding:2px 8px}
+  .suggest .none{padding:12px 14px;font-size:15px;color:#666}
+  .suggest mark{background:#fff1a8;color:inherit;padding:0}
+  .name-hint{font-size:13px;color:#777;margin-top:4px;min-height:16px}
+  .name-hint.err{color:var(--bad);font-weight:600}
+
+  .title{font-family:"Arial Rounded MT Bold","Trebuchet MS","Segoe UI",Arial,sans-serif;font-weight:800;
+    color:var(--blue);font-size:30px;letter-spacing:-.5px;margin:14px 0 6px;
+    text-shadow:2px 2px 0 #fff,-1px -1px 0 #fff, 3px 3px 0 #c9dcf0}
+  .title .star{color:#9bbbe0;font-size:18px;vertical-align:top}
+
+  .instr{background:var(--boxgreen);border:2px solid var(--green);padding:8px 12px;font-size:16px;line-height:1.35;
+    transform:rotate(-.6deg)}
+  .instr b{color:#222}
+  .instr .lp{color:var(--blue)}
+
+  .q{display:flex;gap:6px;font-size:17px;line-height:1.35}
+  .num{font-weight:700;color:#555;white-space:nowrap;flex:none}
+  .num::before{content:"";display:inline-block;width:0;height:22px;vertical-align:-4px}
+  .num.mark-ok::before,.num.mark-bad::before,.num.mark-blank::before{
+    content:"✓";width:22px;margin-right:5px;border-radius:50%;background:var(--green);color:#fff;
+    font-size:14px;line-height:22px;text-align:center;flex:none}
+  .num.mark-ok::before{content:"✓";background:var(--ok)}
+  .num.mark-bad::before{content:"✗";background:var(--bad)}
+  .num.mark-blank::before{content:"–";background:#999}
+  textarea{width:100%;margin-top:10px;min-height:120px;font:inherit;font-size:17px;padding:10px;border:1.5px solid #b8b8b8;
+    border-radius:6px;resize:vertical;background:#fff}
+  textarea:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px #cfe2f6}
+
+  /* problems */
+  .prob{display:flex;align-items:flex-start;gap:6px;margin-top:16px}
+  .prob .num{font-size:18px;padding-top:2px}
+  .alg{display:inline-grid;grid-auto-rows:44px;font-size:24px;color:#333;font-variant-numeric:tabular-nums}
+  .alg .cell{width:36px;text-align:center;line-height:44px;display:flex;align-items:center;justify-content:center}
+  .digit{font:inherit;font-size:22px;font-weight:600;width:32px;height:38px;padding:0;text-align:center;color:#0b2a78;
+    border:2px solid #7d8a99;border-radius:5px;background:#fffef2}
+  .digit:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px #cfe2f6;background:#fff}
+  .digit.ok{border-color:var(--ok);background:#eaf7ec}
+  .digit.bad{border-color:var(--bad);background:#fdecec}
+  .digit:disabled{color:#222;opacity:1;-webkit-text-fill-color:#222}
+  .alg .rule{border-bottom:1.5px solid #333}
+  .pbox{display:inline-block;width:20px;height:24px;border:1.5px solid #9aa0a6;vertical-align:middle;background:#fff}
+  .ans{font:inherit;font-size:22px;font-weight:600;height:44px;text-align:right;padding:0 8px;color:#0b2a78;
+    border:2px solid #7d8a99;border-radius:6px;background:#fffef2;letter-spacing:2px;margin:-5px 0}
+  .ans:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px #cfe2f6;background:#fff}
+  .ans.ok{border-color:var(--ok);background:#eaf7ec}
+  .ans.bad{border-color:var(--bad);background:#fdecec}
+  .ans:disabled, textarea:disabled{color:#222;opacity:1;-webkit-text-fill-color:#222}
+  .fix{display:block;font-size:15px;font-weight:700;color:var(--bad);margin-top:6px}
+  .fix.okc{color:var(--ok)}
+  .area{display:block}
+  .area text{font-family:inherit;font-size:15px;fill:#333}
+
+  .ip-head{display:flex;align-items:flex-end;gap:16px}
+  .ip-head .instr{flex:1 1 auto;margin-bottom:6px}
+  .bubble{position:relative;flex:0 0 190px;background:#fff;border:2px solid var(--green);border-radius:50%;
+    padding:12px 14px;text-align:center;font-family:"Comic Sans MS","Chalkboard SE","Segoe Print",sans-serif;
+    font-size:14px;line-height:1.3;margin-top:-34px}
+  .bubble::after{content:"";position:absolute;left:40%;bottom:-14px;border:9px solid transparent;border-top:12px solid var(--green)}
+
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:10px 24px}
+  .row4{display:grid;grid-template-columns:repeat(4,1fr);gap:10px 18px;margin-top:22px}
+  .expr{flex-direction:column;gap:8px}
+  .expr .q{font-size:19px}
+  .expr .ans{width:120px;margin:0}
+  .under{display:flex;flex-direction:column;align-items:flex-start}
+  .gap{margin-left:16px}
+
+  .foot{display:flex;justify-content:flex-end;align-items:center;gap:10px;font-size:16px;margin-top:30px}
+  .foot .sep{width:1px;height:20px;background:#555}
+  .foot .pg{margin-left:56px;font-weight:700}
+
+  /* modal */
+  .modal-bg{position:fixed;top:0;right:0;bottom:0;left:0;background:rgba(10,20,40,.45);display:none;align-items:center;justify-content:center;z-index:50;padding:16px}
+  .modal-bg.show{display:flex}
+  .modal{background:#fff;border-radius:12px;max-width:440px;width:100%;padding:22px;box-shadow:0 10px 40px rgba(0,0,0,.3)}
+  .modal h4{margin:0 0 8px;font-size:21px;color:var(--navy)}
+  .modal p{margin:0 0 18px;font-size:17px;line-height:1.4}
+  .modal .btns{justify-content:flex-end}
+
+  @media (max-width:760px){
+    .page{padding:0 34px 0 18px}
+    .edge{width:14px}
+    .row2{grid-template-columns:1fr}
+    .row4{grid-template-columns:1fr 1fr}
+    .bubble{display:none}
+    .title{font-size:26px}
+  }
+  @media (max-width:420px){ .row4{grid-template-columns:1fr} .prob{flex-wrap:wrap} }
+  @media (min-width:1400px){ .page{max-width:1000px} }
+
+  /* ---------- additions for the Additional Practice pages ---------- */
+  :root{ --cw:34px; }
+  .pages{display:flex;flex-direction:column;gap:22px}
+  .pages > .page{min-width:0;width:100%}
+  .qbody p{overflow-wrap:anywhere}
+  .edge.left{right:auto;left:0}
+  .page{padding:0 52px 0 34px}
+  .page:nth-child(even){padding:0 34px 0 52px}
+  .inner{padding:28px 0 26px}
+  .namerow{margin-bottom:10px}
+  .aphead{display:flex;justify-content:flex-end;margin:-6px 0 10px}
+  .apbox{border:3px solid #c9ced6;border-radius:14px;padding:8px 16px 10px;background:#fff;max-width:330px;box-shadow:0 2px 0 #e2e6ec}
+  .ap1{font-family:"Arial Narrow","Segoe UI",Arial,sans-serif;font-weight:800;font-size:26px;line-height:1.05;color:#222}
+  .ap1 b{font-size:28px}
+  .ap2{font-weight:700;color:#555;font-size:18px;margin-top:4px;line-height:1.2}
+  .another{border:3px solid #555;border-radius:4px;padding:10px 16px 14px;margin:6px 0 16px;position:relative;font-size:16px;line-height:1.4}
+  .another h3{margin:0 0 6px;font-family:"Arial Narrow","Segoe UI",Arial,sans-serif;font-size:22px;color:#333}
+  .another p{margin:6px 0}
+  .pat{display:grid;grid-template-columns:1fr 1fr 1.1fr;gap:12px;align-items:center;font-variant-numeric:tabular-nums}
+  .bubble{margin-top:0}
+  .bubble.small{flex:0 0 220px;font-size:13.5px;margin-top:-10px}
+  .bubble.inline{display:inline-block;max-width:260px;margin:6px 0 0}
+  .pat .bubble{flex:none;margin:0}
+  .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:0}
+  .steps.two{grid-template-columns:1fr 1.4fr}
+  .steps > div{padding:0 12px;border-left:1.5px solid #bbb}
+  .steps > div:first-child{border-left:0;padding-left:0}
+  .steps h4{margin:4px 0;font-family:"Arial Narrow","Segoe UI",Arial,sans-serif;font-size:20px;color:#333}
+  .mini{font-size:20px;line-height:1.25;text-align:right;width:84px;margin:6px 0 0 20px;font-variant-numeric:tabular-nums}
+  .mini small{font-size:13px}
+  .mini u{text-decoration:none;border-bottom:1.5px solid #333;display:inline-block;padding-left:6px}
+  .say{font-style:italic}
+
+  .instr{display:inline-block;margin:10px 0 6px;transform:rotate(-.4deg);background:#ececec;border-color:#9a9a9a}
+  .ip-head{align-items:flex-start;justify-content:space-between}
+  .ip-head .instr{flex:0 1 auto}
+  .lead{margin:6px 0;font-size:17px}
+  .assess{display:flex;align-items:center;gap:10px;margin:18px 0 6px;font-family:"Arial Narrow","Segoe UI",Arial,sans-serif;font-weight:800;font-size:22px;color:#333;border-bottom:3px solid #333;padding-bottom:4px}
+  .assess .chk{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:50%;background:#333;color:#fff;font-size:17px}
+
+  .qb{display:flex;gap:8px;align-items:flex-start;padding:10px 0;font-size:17px;line-height:1.4}
+  .qb .num{font-size:18px;padding-top:1px;min-width:28px}
+  .qbody{flex:1 1 auto;min-width:0}
+  .qbody p{margin:0 0 8px}
+  .tag{color:#555}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:4px 28px}
+  .grid4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:4px 16px}
+  .grid2.lines > .qb:nth-child(odd){border-right:1.5px solid #bbb;padding-right:20px}
+  .lines{border-bottom:2px solid #555;padding-bottom:8px;margin-bottom:8px}
+  .split{display:grid;grid-template-columns:1.25fr 1fr;gap:20px;align-items:center}
+  .vert .qb{padding:12px 0}
+
+  .ans{height:42px;margin:0 4px;vertical-align:middle;font-size:20px;letter-spacing:1px}
+  .ans.ws{width:64px}.ans.wm{width:120px}.ans.wl{width:150px}
+  .ans.walg{width:100%;margin:0;text-align:right}
+  .ans.sup{width:38px;height:34px;font-size:17px;padding:0 4px;text-align:center;letter-spacing:0;margin:0 2px}
+  .supbox{vertical-align:12px}
+  .pre,.post{font-size:17px;color:#333;vertical-align:middle}
+  .post{margin-left:2px}
+  .patlist{display:flex;flex-direction:column;gap:6px}
+  .patrow{display:flex;align-items:center;gap:4px;flex-wrap:wrap}
+  .patrow span{min-width:0;white-space:nowrap;font-variant-numeric:tabular-nums}
+  .grid4 .patrow .ans{width:100%;max-width:120px}
+
+  .alg{display:inline-grid;grid-auto-rows:44px;font-size:23px;color:#333;font-variant-numeric:tabular-nums}
+  .alg .cell{width:var(--cw)}
+  .alg .cell.span{width:auto;padding:3px 0}
+  .alg .carrycell{align-items:flex-end}
+  .digit{width:30px;height:36px;font-size:20px}
+  .digit.carry{width:24px;height:26px;font-size:15px;border-width:1.5px;border-style:dashed;background:#fff}
+
+  .choices{display:flex;flex-wrap:wrap;gap:8px;margin:4px 0 6px}
+  .chip{font:inherit;font-size:17px;min-height:44px;padding:0 18px;border-radius:22px;border:2px solid #7d8a99;background:#fffef2;color:#222;cursor:pointer}
+  .chip[aria-pressed="true"]{background:var(--navy);border-color:var(--navy);color:#fff}
+  .mc,.ms{display:flex;flex-direction:column;gap:6px;margin:6px 0 0 8px}
+  .mcopt,.msopt{display:flex;align-items:center;gap:14px;font:inherit;font-size:18px;text-align:left;min-height:46px;padding:4px 12px;border:2px solid transparent;border-radius:10px;background:transparent;color:#222;cursor:pointer}
+  .mcopt:hover,.msopt:hover{background:#f2f6fb}
+  .letter{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:50%;border:2px solid #555;font-weight:700;font-size:15px;flex:none}
+  .mcopt[aria-pressed="true"]{border-color:var(--navy);background:#e8eef9}
+  .mcopt[aria-pressed="true"] .letter{background:var(--navy);border-color:var(--navy);color:#fff}
+  .sq{width:26px;height:26px;border:2px solid #555;border-radius:5px;flex:none;display:inline-flex;align-items:center;justify-content:center;font-weight:800}
+  .msopt[aria-pressed="true"]{border-color:var(--navy);background:#e8eef9}
+  .msopt[aria-pressed="true"] .sq{background:var(--navy);border-color:var(--navy);color:#fff}
+  .msopt[aria-pressed="true"] .sq::after{content:"✓"}
+  .chip.ok,.mcopt.ok{border-color:var(--ok)!important;background:#eaf7ec!important;color:#14532d!important}
+  .chip.bad,.mcopt.bad{border-color:var(--bad)!important;background:#fdecec!important;color:#7f1d1d!important}
+  .mcopt.ok .letter{background:var(--ok);border-color:var(--ok)} .mcopt.bad .letter{background:var(--bad);border-color:var(--bad)}
+  .ms.ok{outline:2px solid var(--ok);border-radius:10px} .ms.bad{outline:2px solid var(--bad);border-radius:10px}
+  .page textarea{min-height:84px;font-size:16px;margin-top:6px}
+  .locked .chip,.locked .mcopt,.locked .msopt{cursor:default}
+
+  .tbl{border-collapse:separate;border-spacing:0;border:2px solid #9a9a9a;border-radius:10px;overflow:hidden;font-size:16px;background:#fff}
+  .tblwrap{display:flex;align-items:flex-start;justify-self:end}
+  .dlab{writing-mode:vertical-rl;transform:rotate(180deg);background:#8a8a8a;color:#fff;font-weight:800;font-size:12px;letter-spacing:2px;padding:8px 4px;border-radius:0 6px 6px 0;margin-top:22px}
+  .tbl th{background:#f3f3f3;padding:7px 14px;border-bottom:1.5px dotted #888;text-align:left}
+  .tbl td{padding:6px 14px;border-top:1px solid #eee}
+  .tbl tr:nth-child(odd) td{background:#f6f6f6}
+  .callout{justify-self:end;border:2.5px solid #333;padding:10px 16px;transform:skewX(-8deg);font-size:16px;background:#fff;max-width:240px}
+
+  .fix{display:block;font-size:15px;font-weight:700;color:var(--bad);margin-top:6px}
+  .fix.off{color:#777;font-weight:600}
+  .num.mark-off::before{content:"–";width:22px;margin-right:5px;border-radius:50%;background:#bbb;color:#fff;font-size:14px;line-height:22px;text-align:center;display:inline-block}
+  .foot.left{justify-content:flex-start}
+  .foot.left .pg{margin:0 56px 0 0}
+
+  @media (max-width:760px){
+    .page{padding:0 26px 0 16px} .page:nth-child(even){padding:0 16px 0 26px}
+    .grid4{grid-template-columns:1fr 1fr}
+    .grid2,.split,.pat,.steps,.steps.two{grid-template-columns:1fr}
+    .grid2.lines > .qb:nth-child(odd){border-right:0;padding-right:0}
+    .steps > div{border-left:0;padding:0}
+    .tblwrap,.callout{justify-self:start}
+    .aphead{justify-content:flex-start}
+  }
+  @media (max-width:420px){
+    .grid4{grid-template-columns:1fr}
+    .page{padding:0 20px 0 10px} .page:nth-child(even){padding:0 10px 0 20px} .edge{width:10px}
+    .ans.wl{width:132px}
+    .apbox{max-width:100%}
+    .alg{font-size:21px}
+    :root{--cw:30px}
+  }
+</style>
+</head>
+<body>
+
+<div class="toolbar">
+  <div class="toolbar-in">
+    <div class="tb-title">Additional Practice · 3-1, 3-3, 3-4</div>
+    <div class="prog" aria-live="polite">
+      <div class="prog-label">Answered <b id="count">0</b> of <b id="total">0</b></div>
+      <div class="prog-track"><div class="prog-fill" id="fill"></div></div>
+    </div>
+    <div class="btns">
+      <button class="btn" id="saveBtn" type="button">Save Progress</button>
+      <button class="btn primary" id="submitBtn" type="button">Submit Assignment</button>
+      <button class="btn" id="restartBtn" type="button">Restart</button>
+    </div>
+    <div class="status" id="status"></div>
+  </div>
+</div>
+
+<div class="summary" id="summary" hidden></div>
+
+<div class="wrap"><div class="pages" id="pages"></div></div>
+
+<div class="namerow" id="namerow">
+  <label for="studentName">Name</label>
+  <div class="name-wrap">
+    <input class="line-input" id="studentName" autocomplete="off" spellcheck="false" placeholder="Start typing your name…"
+      role="combobox" aria-autocomplete="list" aria-controls="suggest" aria-expanded="false">
+    <div class="suggest" id="suggest" role="listbox"></div>
+    <div class="name-hint" id="nameHint"></div>
+  </div>
+  <label for="studentClass">Class</label>
+  <select id="studentClass"><option value="">—</option></select>
+</div>
+
+<div class="modal-bg" id="modalBg" role="dialog" aria-modal="true">
+  <div class="modal">
+    <h4 id="mTitle"></h4>
+    <p id="mText"></p>
+    <div class="btns">
+      <button class="btn" id="mCancel" type="button">Cancel</button>
+      <button class="btn primary" id="mOk" type="button">OK</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* small fixes so older iPads / Chromebooks work */
+if (window.NodeList && !NodeList.prototype.forEach) NodeList.prototype.forEach = Array.prototype.forEach;
+if (!Element.prototype.matches) Element.prototype.matches = Element.prototype.msMatchesSelector || Element.prototype.webkitMatchesSelector;
+if (!Element.prototype.closest) Element.prototype.closest = function(sel){ var el = this; while (el && el.nodeType === 1){ if (el.matches(sel)) return el; el = el.parentElement; } return null; };
+</script>
+<script>
+(function(){
+  'use strict';
+  var LS_KEY = 'envision-g5-additional-practice-t3';
+  var nameEl = document.getElementById('studentName'), clsEl = document.getElementById('studentClass');
+
+  /* ---------- talking to the server via fetch ---------- */
+  function api(url, body){
+    var opts = { method: 'POST', headers: { 'Content-Type': 'application/json' } };
+    if (body !== undefined) opts.body = JSON.stringify(body);
+    return fetch(url, opts).then(function(r){
+      if (!r.ok) return r.json().then(function(d){ var e = new Error(d.error || 'Server error'); throw e; });
+      return r.json();
+    });
+  }
+  function newId(){ return Date.now().toString(36) + Math.random().toString(36).slice(2, 10); }
+
+  /* ================= the six workbook pages =================
+   * Built from small helpers so every answer box knows its question (data-q) and part (data-p).
+   * Nothing here contains answers – marking happens on the server.
+   */
+  function N(q, p, w, pre, post){
+    return (pre ? '<span class="pre">' + pre + '</span>' : '') +
+      '<input class="ans w' + (w || 'm') + '" type="text" inputmode="numeric" autocomplete="off" data-q="' + q + '" data-p="' + p + '" aria-label="' + lab(q) + '">' +
+      (post ? '<span class="post">' + post + '</span>' : '');
+  }
+  function SUP(q, p){
+    return '<sup class="supbox"><input class="ans sup" type="text" inputmode="numeric" maxlength="1" autocomplete="off" data-q="' + q + '" data-p="' + p + '" aria-label="' + lab(q) + ' exponent"></sup>';
+  }
+  function CH(q, p, opts){
+    return '<div class="choices" data-q="' + q + '" data-p="' + p + '" role="radiogroup" aria-label="' + lab(q) + '">' +
+      opts.map(function(o){ return '<button type="button" class="chip" data-v="' + o + '" aria-pressed="false">' + o + '</button>'; }).join('') + '</div>';
+  }
+  function MC(q, p, opts){
+    return '<div class="mc" data-q="' + q + '" data-p="' + p + '" role="radiogroup" aria-label="' + lab(q) + '">' +
+      opts.map(function(o, i){ var L = 'ABCD'.charAt(i);
+        return '<button type="button" class="mcopt" data-v="' + L + '" aria-pressed="false"><span class="letter">' + L + '</span><span>' + o + '</span></button>'; }).join('') + '</div>';
+  }
+  function MS(q, p, opts){
+    return '<div class="ms" data-q="' + q + '" data-p="' + p + '" aria-label="' + lab(q) + '">' +
+      opts.map(function(o, i){
+        return '<button type="button" class="msopt" data-v="' + i + '" aria-pressed="false"><span class="sq"></span><span>' + o + '</span></button>'; }).join('') + '</div>';
+  }
+  function T(q, ph){
+    return '<textarea data-q="' + q + '" data-p="t" placeholder="' + (ph || 'Explain.') + '" aria-label="' + lab(q) + ' explanation"></textarea>';
+  }
+  function ALG(q, cols, rows, rules){
+    var h = '<div class="alg" style="grid-template-columns:repeat(' + cols + ',var(--cw))">', di = 0, xi = 0;
+    rows.forEach(function(row, ri){
+      var col = 0, ruled = rules.indexOf(ri) > -1;
+      row.forEach(function(c){
+        var cls = 'cell' + (ruled ? ' rule' : ''), inner = '';
+        if (c && typeof c === 'object'){
+          inner = '<input class="ans walg" type="text" inputmode="numeric" autocomplete="off" data-q="' + q + '" data-p="a" aria-label="' + lab(q) + '">';
+          h += '<div class="' + cls + ' span" style="grid-column:' + (col + 1) + ' / span ' + c.a + '">' + inner + '</div>';
+          col += c.a; return;
+        }
+        if (c === 'D') inner = '<input class="digit" type="text" inputmode="numeric" maxlength="1" autocomplete="off" data-q="' + q + '" data-p="d" data-i="' + (di++) + '" data-row="' + ri + '" data-col="' + col + '" aria-label="' + lab(q) + ' box ' + di + '">';
+        else if (c === 'X') inner = '<input class="digit carry" type="text" inputmode="numeric" maxlength="1" autocomplete="off" data-q="' + q + '" data-p="x" data-i="' + (xi++) + '" aria-label="' + lab(q) + ' regroup box">';
+        else inner = c;
+        h += '<div class="' + cls + (c === 'X' ? ' carrycell' : '') + '">' + inner + '</div>';
+        col++;
+      });
+    });
+    return h + '</div>';
+  }
+  function V(q, top, bot){
+    var t = String(top).replace(/,/g, '').split(''), b = String(bot).split('');
+    var cols = Math.max(t.length, b.length + 1) + 1;
+    var pad = function(a){ a = a.slice(); while (a.length < cols) a.unshift(''); return a; };
+    var r2 = pad(b); r2[0] = '×';
+    return ALG(q, cols, [pad(t), r2, ['', { a: cols - 1 }]], [1]);
+  }
+  function Q(q, n, body, cls){
+    return '<div class="qb' + (cls ? ' ' + cls : '') + '" data-qid="' + q + '"><span class="num" data-num="' + q + '">' + n + '.</span>' +
+      '<div class="qbody">' + body + '<div class="fix" id="fix-' + q + '" hidden></div></div></div>';
+  }
+  function lab(q){ return 'Lesson ' + LESSON[q.split('-')[0]] + ', question ' + q.split('-')[1]; }
+  var LESSON = { L1: '3-1', L3: '3-3', L4: '3-4' };
+  function head(n, title){
+    return '<div class="aphead"><div class="apbox"><div class="ap1">Additional<br>Practice <b>' + n + '</b></div><div class="ap2">' + title + '</div></div></div>';
+  }
+  function foot(lesson, page, left){
+    return '<div class="foot' + (left ? ' left' : '') + '">' + (left ? '<span class="pg">' + page + '</span>' : '') +
+      '<b>Topic 3</b><span class="sep"></span><span>Lesson ' + lesson + '</span>' + (left ? '' : '<span class="pg">' + page + '</span>') + '</div>';
+  }
+  function instr(t){ return '<div class="instr">' + t + '</div>'; }
+  function sec(t){ return '<div class="assess"><span class="chk">✓</span>' + t + '</div>'; }
+  var X = '×';
+
+  var PAGES = [];
+
+  /* ---------- page 27 · Lesson 3-1 ---------- */
+  PAGES.push(head('3-1', 'Multiply Greater Numbers by Powers of 10') +
+    '<div class="another"><h3>Another Look!</h3><p>Patterns can help you multiply by powers of 10.</p>' +
+    '<div class="pat"><div>53 × 1 = 53<br>53 × 10 = 530<br>53 × 100 = 5,300<br>53 × 1,000 = 53,000<br>53 × 10,000 = 530,000</div>' +
+    '<div>70 × 1 = 70<br>70 × 10<sup>1</sup> = 700<br>70 × 10<sup>2</sup> = 7,000<br>70 × 10<sup>3</sup> = 70,000<br>70 × 10<sup>4</sup> = 700,000</div>' +
+    '<div class="bubble">Look at the number of zeros or the exponent for the power of 10. Place that number of zeros on the end of the other factor.</div></div></div>' +
+    Q('L1-1', 1, '<p>To find 61 × 1,000, place ' + N('L1-1', 'a', 's') + ' zeros on the end of ' + N('L1-1', 'b', 's') + ' to form the product ' + N('L1-1', 'c', 'l') + '.</p>') +
+    instr('In <b>2–5</b>, use patterns to find each product.') +
+    '<div class="grid4">' +
+      [['L1-2', 2, '75', ['1', '10', '100', '1,000', '10,000']], ['L1-3', 3, '50', ['1', '10', '100', '1,000', '10,000']],
+       ['L1-4', 4, '60', ['1', '10<sup>1</sup>', '10<sup>2</sup>', '10<sup>3</sup>', '10<sup>4</sup>']],
+       ['L1-5', 5, '18', ['1', '10<sup>1</sup>', '10<sup>2</sup>', '10<sup>3</sup>', '10<sup>4</sup>']]].map(function(r){
+        return Q(r[0], r[1], '<div class="patlist">' + r[3].map(function(m, i){
+          return '<div class="patrow"><span>' + r[2] + ' × ' + m + ' =</span>' + N(r[0], 'p' + (i + 1), 'm') + '</div>'; }).join('') + '</div>');
+      }).join('') + '</div>' +
+    instr('In <b>6–9</b>, find each product.') +
+    '<div class="grid4">' +
+      Q('L1-6', 6, '<p>84 × 100</p>' + N('L1-6', 'a')) + Q('L1-7', 7, '<p>90 × 10</p>' + N('L1-7', 'a')) +
+      Q('L1-8', 8, '<p>54 × 10<sup>2</sup></p>' + N('L1-8', 'a')) + Q('L1-9', 9, '<p>10<sup>3</sup> × 12</p>' + N('L1-9', 'a')) + '</div>' +
+    instr('In <b>10–15</b>, use reasoning to fill in the missing numbers.') +
+    '<div class="grid2">' +
+      Q('L1-10', 10, '<p>45 × 10<sup>3</sup> = ' + N('L1-10', 'a', 'l') + '</p>') +
+      Q('L1-11', 11, '<p>12,960 = 10<sup>1</sup> × ' + N('L1-11', 'a') + '</p>') +
+      Q('L1-12', 12, '<p>22 × 10' + SUP('L1-12', 'a') + ' = 220,000</p>') +
+      Q('L1-13', 13, '<p>10<sup>4</sup> × 30 = ' + N('L1-13', 'a', 'l') + '</p>') +
+      Q('L1-14', 14, '<p>10' + SUP('L1-14', 'a') + ' × 374 = 37,400</p>') +
+      Q('L1-15', 15, '<p>70,000 = 70 × 10' + SUP('L1-15', 'a') + '</p>') + '</div>' +
+    foot('3-1', 27));
+
+  /* ---------- page 28 · Lesson 3-1 ---------- */
+  PAGES.push(
+    '<div class="grid2 lines">' +
+      Q('L1-16', 16, '<p><b class="tag">Construct Arguments</b> Ms. O’Malley’s cousin lives 1,650 miles away. Ms. O’Malley won a gift card for 100 gallons of gas. If her car can travel 35 miles on each gallon, can she drive roundtrip to see her cousin on the free gas? Explain how you know.</p>' +
+        CH('L1-16', 'c', ['Yes', 'No']) + T('L1-16', 'Explain how you know.')) +
+      Q('L1-17', 17, '<p>Each beehive on Larson’s Honey Farm usually produces 85 pounds of honey per year. About how many pounds of honey will 10<sup>3</sup> hives produce in a year?</p>' + N('L1-17', 'a', 'l', '', 'pounds')) + '</div>' +
+    '<div class="split lines">' +
+      Q('L1-18', 18, '<p>A hotel chain is ordering new furnishings. What is the total cost of 1,000 sheet sets, 1,000 pillows, and 100 desk chairs?</p>' + N('L1-18', 'a', 'l', '$')) +
+      '<div class="tblwrap"><span class="dlab">DATA</span><table class="tbl"><tr><th>Item</th><th>Price</th></tr><tr><td>Towel sets</td><td>$18</td></tr><tr><td>Sheet sets</td><td>$24</td></tr><tr><td>Pillows</td><td>$7</td></tr><tr><td>Desk chair</td><td>$114</td></tr></table></div>' +
+    '<div class="grid2 lines">' +
+      Q('L1-19', 19, '<p>Which number is greater: 87 or 13.688? How do you know?</p>' + CH('L1-19', 'c', ['87', '13.688']) + T('L1-19', 'How do you know?')) +
+      Q('L1-20', 20, '<p><b class="tag">Higher Order Thinking</b> The weight of an elephant is 10<sup>3</sup> times the weight of a cat. If the elephant weighs 14,000 pounds, how many pounds does the cat weigh? How did you find the answer?</p>' +
+        N('L1-20', 'a', 'm', '', 'pounds') + T('L1-20', 'How did you find the answer?')) + '</div>' +
+    sec('Assessment Practice') +
+    '<div class="grid2">' +
+      Q('L1-21', 21, '<p>Which is equivalent to multiplying a number by 10<sup>3</sup>?</p>' +
+        MC('L1-21', 'c', ['multiplying by 30', 'multiplying by 1,000', 'multiplying by 10,000', 'multiplying by 10 twice'])) +
+      Q('L1-22', 22, '<p>Which is equivalent to 5 × 10<sup>4</sup>? Select all that apply.</p>' +
+        MS('L1-22', 'm', ['5 × 10,000', '5 × 100,000', '5,000', '50,000', '50 × 10<sup>3</sup>'])) + '</div>' +
+    foot('3-1', 28, true));
+
+  /* ---------- page 31 · Lesson 3-3 ---------- */
+  PAGES.push(head('3-3', 'Multiply by 1-Digit Numbers') +
+    '<div class="another"><h3>Another Look!</h3><p class="say">The steps below show one way to multiply 3-digit numbers by 1-digit numbers.</p>' +
+    '<div class="steps">' +
+      '<div><h4>Step 1</h4><p>Multiply the ones. Regroup if necessary.</p><div class="mini"><small>&nbsp;1&nbsp;</small><br>154<br><u>×&nbsp;&nbsp;&nbsp;4</u><br>6</div></div>' +
+      '<div><h4>Step 2</h4><p>Multiply the tens. Add any extra tens. Regroup if necessary.</p><div class="mini"><small>2 1&nbsp;</small><br>154<br><u>×&nbsp;&nbsp;&nbsp;4</u><br>16</div></div>' +
+      '<div><h4>Step 3</h4><p>Multiply the hundreds. Add any extra hundreds.</p><div class="mini"><small>2 1&nbsp;</small><br>154<br><u>×&nbsp;&nbsp;&nbsp;4</u><br>616</div></div>' +
+    '</div></div>' +
+    '<div class="ip-head">' + instr('For <b>1–16</b>, find each product.') + '<div class="bubble small">Remember to regroup if necessary.</div></div>' +
+    '<div class="grid4 vert">' +
+      Q('L3-1', 1, ALG('L3-1', 4, [['', '', '1', '3'], [X, '', '', '3'], ['', '', 'D', 'D']], [1])) +
+      Q('L3-2', 2, ALG('L3-2', 4, [['', '', 'X', ''], ['', '', '1', '7'], [X, '', '', '7'], ['', 'D', 'D', 'D']], [2])) +
+      Q('L3-3', 3, ALG('L3-3', 4, [['', 'X', '', ''], ['', '7', '4', '1'], [X, '', '', '3'], ['D', 'D', 'D', 'D']], [2])) +
+      Q('L3-4', 4, ALG('L3-4', 4, [['', 'X', 'X', ''], ['', '5', '8', '7'], [X, '', '', '3'], ['D', 'D', 'D', 'D']], [2])) +
+      [[5, 413, 6], [6, 625, 6], [7, 36, 5], [8, 731, 9], [9, 88, 5], [10, 52, 8], [11, 352, 3], [12, 159, 5],
+       [13, 164, 5], [14, 19, 8], [15, 478, 2], [16, 862, 7]].map(function(r){ return Q('L3-' + r[0], r[0], V('L3-' + r[0], r[1], r[2])); }).join('') +
+    '</div>' + foot('3-3', 31));
+
+  /* ---------- page 32 · Lesson 3-3 ---------- */
+  PAGES.push(
+    '<div class="split lines"><div>' + instr('For <b>17–18</b>, use the table at the right.') +
+      Q('L3-17', 17, '<p>What is the average length fingernails will grow in 12 months?</p>' + N('L3-17', 'a', 'm', '', 'mm')) +
+      Q('L3-18', 18, '<p>How much longer will hair grow than fingernails in 6 months?</p>' + N('L3-18', 'a', 'm', '', 'mm')) + '</div>' +
+      '<div class="tblwrap"><span class="dlab">DATA</span><table class="tbl"><tr><th colspan="2">Average Rate of Growth in Millimeters per Month</th></tr><tr><td>Fingernails</td><td>5 mm</td></tr><tr><td>Hair</td><td>12 mm</td></tr></table></div>' +
+    '<div class="grid2 lines">' +
+      Q('L3-19', 19, '<p>Derek rides in 3 motorcycle races. Each race is 150 miles. How many miles does Derek ride?</p>' + N('L3-19', 'a', 'm', '', 'miles')) +
+      Q('L3-20', 20, '<p>Walt averages 98 miles per hour in 4 races. If each race is 95 miles in length, how many miles did Walt drive in the races?</p>' + N('L3-20', 'a', 'm', '', 'miles')) +
+      Q('L3-21', 21, '<p>The Puerto Rico Trench has a depth of 30,246 feet. Write the numbers that are 10,000 less than and 10,000 greater than this number.</p>' +
+        '<div class="patrow"><span>10,000 less:</span>' + N('L3-21', 'a', 'l') + '</div><div class="patrow"><span>10,000 greater:</span>' + N('L3-21', 'b', 'l') + '</div>') +
+      Q('L3-22', 22, '<p>Which place value would you look at to compare 225,998 and 225,988?</p>' +
+        CH('L3-22', 'c', ['ones', 'tens', 'hundreds', 'thousands', 'ten thousands', 'hundred thousands'])) +
+      Q('L3-23', 23, '<p><b class="tag">Critique Reasoning</b> Martin multiplied 423 by 7 and said the product is 2,841. Do Martin’s calculations make sense? Explain.</p>' +
+        CH('L3-23', 'c', ['Yes', 'No']) + T('L3-23')) +
+      Q('L3-24', 24, '<p><b class="tag">Higher Order Thinking</b> Tyrone has 6 times as many marbles as Pam. Pam has 34 marbles. Louis has 202 marbles. Who has more marbles, Tyrone or Louis? Explain.</p>' +
+        CH('L3-24', 'c', ['Tyrone', 'Louis']) + T('L3-24')) + '</div>' +
+    sec('Assessment Practice') +
+    '<div class="grid2">' +
+      Q('L3-25', 25, '<p>Find the product.</p>' + V('L3-25', '651', '7')) +
+      Q('L3-26', 26, '<p>Find the product.</p>' + V('L3-26', '2,311', '6')) + '</div>' +
+    foot('3-3', 32, true));
+
+  /* ---------- page 33 · Lesson 3-4 ---------- */
+  PAGES.push(head('3-4', 'Multiply 2-Digit by 2-Digit Numbers') +
+    '<div class="another"><h3>Another Look!</h3><p>There are 24 cars in the Speedy Cup Series. Each car has 13 workers in the pit area. How many pit-area workers are at the race?</p>' +
+    '<div class="steps two">' +
+      '<div><h4>Use Partial Products</h4><div class="mini">24<br><u>×&nbsp;13</u><br>12<br>60<br>40<br><u>+&nbsp;200</u><br>312</div></div>' +
+      '<div><h4>Use the Standard Algorithm</h4><p>Multiply by the ones, then by the tens. Regroup if necessary. Add the partial products.</p>' +
+        '<div class="mini"><small>1&nbsp;&nbsp;</small><br>24<br><u>×&nbsp;13</u><br>72<br><u>+&nbsp;240</u><br>312</div></div>' +
+    '</div><p>There are 312 pit-area workers at the race.</p><div class="bubble small inline">There is more than one way to multiply.</div></div>' +
+    '<div class="ip-head">' + instr('For <b>1–10</b>, use the standard algorithm or partial products to find the product. Draw area models as needed.') +
+      '<div class="bubble small">You can use rounding or compatible numbers to estimate and check if your answer is reasonable.</div></div>' +
+    '<div class="grid2 vert">' +
+      Q('L4-1', 1, ALG('L4-1', 4, [['', '', '1', '8'], [X, '', '2', '6'], ['', 'D', 'D', 'D'], ['+', 'D', 'D', '0'], ['', 'D', 'D', 'D']], [1, 3])) +
+      Q('L4-2', 2, ALG('L4-2', 4, [['', '', '1', '7'], [X, '', '2', '5'], ['', '', 'D', 'D'], ['+', 'D', 'D', '0'], ['', 'D', 'D', 'D']], [1, 3])) +
+    '</div><div class="grid4 vert">' +
+      [[3, 88, 32], [4, 53, 48], [5, 18, 77], [6, 67, 27], [7, 67, 34], [8, 91, 46], [9, 56, 31], [10, 67, 57]].map(function(r){
+        return Q('L4-' + r[0], r[0], V('L4-' + r[0], r[1], r[2])); }).join('') +
+    '</div>' + foot('3-4', 33));
+
+  /* ---------- page 34 · Lesson 3-4 ---------- */
+  PAGES.push(
+    '<div class="split lines">' +
+      Q('L4-11', 11, '<p>An ultralight airplane tracked monarch butterflies migrating to Mexico during the month of September. There are 30 days in September. How many miles did the ultralight travel in September?</p>' + N('L4-11', 'a', 'l', '', 'miles')) +
+      '<div class="callout">Average distance each day: <b>45 miles</b></div></div>' +
+    '<div class="split lines"><div>' + '<p class="lead">For <b>12–13</b>, use the table at the right.</p>' +
+      Q('L4-12', 12, '<p>How much do 21 bushels of sweet corn weigh?</p>' + N('L4-12', 'a', 'm', '', 'pounds')) +
+      Q('L4-13', 13, '<p>How much do 18 bushels of asparagus and 7 bushels of carrots weigh?</p>' + N('L4-13', 'a', 'm', '', 'pounds')) + '</div>' +
+      '<div class="tblwrap"><span class="dlab">DATA</span><table class="tbl"><tr><th>Vegetable</th><th>Weight of 1 Bushel</th></tr><tr><td>Asparagus</td><td>24 pounds</td></tr><tr><td>Beets</td><td>52 pounds</td></tr><tr><td>Carrots</td><td>50 pounds</td></tr><tr><td>Sweet corn</td><td>35 pounds</td></tr></table></div>' +
+    '<div class="grid2 lines">' +
+      Q('L4-14', 14, '<p>Rob purchased a rug for his apartment. The rug is 72 inches by 96 inches. Calculate the area of the rug in square inches.</p>' + N('L4-14', 'a', 'l', '', 'square inches')) +
+      Q('L4-15', 15, '<p><b class="tag">Higher Order Thinking</b> Corina found 62 × 22 = 1,042. Is Corina’s answer reasonable? Explain.</p>' + CH('L4-15', 'c', ['Yes', 'No']) + T('L4-15')) + '</div>' +
+    sec('Assessment Practice') +
+    '<div class="grid2">' +
+      Q('L4-16', 16, '<p>Maria has 92 flower arrangements. Each arrangement has 48 blue flowers and 50 yellow flowers. Maria calculates there are 9,016 flowers in all the arrangements. Which of the following expressions shows how to use an estimate to check Maria’s calculation?</p>' +
+        MC('L4-16', 'c', ['90 + 50 + 50', '90 × 10', '90 × (50 + 50)', '90 × (50 × 50)'])) +
+      Q('L4-17', 17, '<p>Without calculating, which of the following is a reasonable answer for 28 × 32?</p>' + MC('L4-17', 'c', ['196', '496', '896', '12,096'])) + '</div>' +
+    foot('3-4', 34, true));
+
+  /* ---------- class list & name suggestions ---------- */
+  var ROSTER = [], CLASSES = [], pendingCls = '';
+  var sugEl = document.getElementById('suggest'), hintEl = document.getElementById('nameHint');
+  var sugItems = [], sugIndex = -1;
+  function norm(t){ return String(t || '').toLowerCase().replace(/[-']/g, ' ').replace(/\s+/g, ' ').trim(); }
+  function esc(t){ return String(t).replace(/[&<>"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+  function findStudent(name, cls){
+    var n = norm(name);
+    return ROSTER.filter(function(st){ return norm(st.name) === n && (!cls || st.cls === cls); })[0] || null;
+  }
+  function hint(msg, err){ hintEl.textContent = msg || ''; hintEl.classList.toggle('err', !!err); }
+  function useRoster(r){
+    ROSTER = (r && r.students) || []; CLASSES = (r && r.classes) || [];
+    CLASSES.forEach(function(c){ var o = document.createElement('option'); o.value = c; o.textContent = c; clsEl.appendChild(o); });
+    if (pendingCls) clsEl.value = pendingCls;
+    if (!nameEl.value) hint('Type the first letters of your name, then tap it in the list.');
+  }
+  function loadRoster(){
+    hint('Loading the class list…');
+    fetch('/api/roster').then(function(r){ return r.json(); }).then(useRoster, function(){
+      hint('Could not load the class list. Check the internet, then reload the page.', true);
+    });
+  }
+  function highlight(name, q){
+    if (!q) return esc(name);
+    var words = name.split(' '), qn = norm(q);
+    return words.map(function(w){
+      return norm(w).indexOf(qn) === 0 ? '<mark>' + esc(w.slice(0, q.length)) + '</mark>' + esc(w.slice(q.length)) : esc(w);
+    }).join(' ');
+  }
+  function matches(q){
+    var qn = norm(q), cls = clsEl.value;
+    if (!qn) return [];
+    var list = ROSTER.filter(function(st){ return !cls || st.cls === cls; });
+    var starts = [], words = [], inside = [];
+    list.forEach(function(st){
+      var n = norm(st.name);
+      if (n.indexOf(qn) === 0) starts.push(st);
+      else if ((' ' + n).indexOf(' ' + qn) > -1) words.push(st);
+      else if (n.indexOf(qn) > -1) inside.push(st);
+    });
+    return starts.concat(words, inside).slice(0, 8);
+  }
+  function openSuggest(){
+    var q = nameEl.value;
+    sugItems = matches(q); sugIndex = -1;
+    if (!ROSTER.length || !norm(q) || (sugItems.length === 1 && norm(sugItems[0].name) === norm(q))){ closeSuggest(); return; }
+    sugEl.innerHTML = sugItems.length
+      ? sugItems.map(function(st, i){
+          return '<button type="button" role="option" data-i="'+i+'"><span>'+highlight(st.name, q.trim())+'</span><span class="tag">'+esc(st.cls)+'</span></button>';
+        }).join('')
+      : '<div class="none">No name found' + (clsEl.value ? ' in ' + esc(clsEl.value) + '. Check your class.' : '.') + '</div>';
+    sugEl.classList.add('show'); nameEl.setAttribute('aria-expanded','true');
+  }
+  function closeSuggest(){ sugEl.classList.remove('show'); nameEl.setAttribute('aria-expanded','false'); sugIndex = -1; }
+  function setActive(i){
+    var btns = sugEl.querySelectorAll('button');
+    if (!btns.length) return;
+    sugIndex = (i + btns.length) % btns.length;
+    btns.forEach(function(b, k){ b.classList.toggle('active', k === sugIndex); });
+    btns[sugIndex].scrollIntoView(false);
+  }
+  function chooseStudent(st){
+    nameEl.value = st.name; clsEl.value = st.cls;
+    closeSuggest(); hint('✓ ' + st.cls); saveLocal(); tryLoadServer();
+  }
+  sugEl.addEventListener('mousedown', function(e){ e.preventDefault(); });
+  sugEl.addEventListener('click', function(e){
+    var b = e.target.closest('button'); if (b) chooseStudent(sugItems[+b.dataset.i]);
+  });
+  nameEl.addEventListener('input', function(){ hint(''); openSuggest(); saveLocal(); });
+  nameEl.addEventListener('focus', openSuggest);
+  nameEl.addEventListener('blur', function(){
+    setTimeout(closeSuggest, 150);
+    var st = ROSTER.length && findStudent(nameEl.value, clsEl.value);
+    if (st && st.name !== nameEl.value) chooseStudent(st);
+  });
+  nameEl.addEventListener('keydown', function(e){
+    if (!sugEl.classList.contains('show')) return;
+    if (e.key === 'ArrowDown'){ e.preventDefault(); setActive(sugIndex + 1); }
+    else if (e.key === 'ArrowUp'){ e.preventDefault(); setActive(sugIndex - 1); }
+    else if (e.key === 'Enter'){ e.preventDefault(); var st = sugItems[sugIndex > -1 ? sugIndex : 0]; if (st) chooseStudent(st); }
+    else if (e.key === 'Escape'){ closeSuggest(); }
+  });
+  clsEl.addEventListener('change', function(){
+    saveLocal();
+    if (nameEl.value && ROSTER.length && !findStudent(nameEl.value, clsEl.value)){ hint('That name is not in ' + clsEl.value + '. Choose your name again.', true); }
+    else tryLoadServer();
+  });
+
+  /* ---------- modal ---------- */
+  var mBg = document.getElementById('modalBg'), mOk = document.getElementById('mOk'), mCancel = document.getElementById('mCancel');
+  function modal(title, text, okLabel, cancelLabel){
+    return new Promise(function(resolve){
+      document.getElementById('mTitle').textContent = title;
+      document.getElementById('mText').textContent = text;
+      mOk.textContent = okLabel || 'OK';
+      mCancel.hidden = cancelLabel === null;
+      mCancel.textContent = cancelLabel || 'Cancel';
+      mBg.classList.add('show'); mOk.focus();
+      function done(v){ mBg.classList.remove('show'); mOk.onclick = mCancel.onclick = null; resolve(v); }
+      mOk.onclick = function(){ done(true); };
+      mCancel.onclick = function(){ done(false); };
+    });
+  }
+
+  /* ================= build the pages ================= */
+  var host = document.getElementById('pages');
+  PAGES.forEach(function(html, i){
+    var pg = document.createElement('main');
+    pg.className = 'page';
+    pg.innerHTML = '<div class="edge' + (i % 2 ? ' left' : '') + '"></div><div class="inner">' + html + '</div>';
+    host.appendChild(pg);
+  });
+  host.querySelector('.page .inner').insertBefore(document.getElementById('namerow'), host.querySelector('.page .inner').firstChild);
+
+  /* ================= answers ================= */
+  var QIDS = [], QPARTS = {};
+  document.querySelectorAll('[data-qid]').forEach(function(el){ QIDS.push(el.getAttribute('data-qid')); });
+  QIDS.forEach(function(q){
+    var ps = [];
+    document.querySelectorAll('[data-q="' + q + '"]').forEach(function(el){
+      var p = el.getAttribute('data-p');
+      if (ps.indexOf(p) < 0) ps.push(p);
+    });
+    QPARTS[q] = ps;
+  });
+  function graded(q){ return QPARTS[q].filter(function(p){ return p !== 't' && p !== 'x'; }); }
+  function els(q, p){ return Array.prototype.slice.call(document.querySelectorAll('[data-q="' + q + '"][data-p="' + p + '"]')); }
+  function boxes(q, p){ return Array.prototype.slice.call(document.querySelectorAll('.digit[data-q="' + q + '"][data-p="' + p + '"]'))
+      .sort(function(a, b){ return a.dataset.i - b.dataset.i; }); }
+  function allInputs(){ return Array.prototype.slice.call(document.querySelectorAll('.page input.ans, .page input.digit, .page textarea, .page .chip, .page .mcopt, .page .msopt')); }
+  function typing(){ return Array.prototype.slice.call(document.querySelectorAll('.page input.ans, .page input.digit:not(.carry)')); }
+
+  function getPart(q, p){
+    var e = els(q, p);
+    if (!e.length) return '';
+    if (p === 'd' || p === 'x') return boxes(q, p).map(function(b){ return b.value || '_'; }).join('');
+    var el = e[0];
+    if (el.classList.contains('choices') || el.classList.contains('mc')){
+      var on = el.querySelector('[aria-pressed="true"]'); return on ? on.getAttribute('data-v') : '';
+    }
+    if (el.classList.contains('ms')){
+      return Array.prototype.slice.call(el.querySelectorAll('[aria-pressed="true"]')).map(function(b){ return b.getAttribute('data-v'); });
+    }
+    return el.value;
+  }
+  function setPart(q, p, v){
+    var e = els(q, p);
+    if (!e.length) return;
+    if (p === 'd' || p === 'x'){ v = String(v || ''); boxes(q, p).forEach(function(b, i){ var ch = v.charAt(i); b.value = /[0-9]/.test(ch) ? ch : ''; }); return; }
+    var el = e[0];
+    if (el.classList.contains('choices') || el.classList.contains('mc')){
+      el.querySelectorAll('button').forEach(function(b){ b.setAttribute('aria-pressed', String(b.getAttribute('data-v') === v)); }); return;
+    }
+    if (el.classList.contains('ms')){
+      var list = Array.isArray(v) ? v.map(String) : [];
+      el.querySelectorAll('button').forEach(function(b){ b.setAttribute('aria-pressed', String(list.indexOf(b.getAttribute('data-v')) > -1)); }); return;
+    }
+    el.value = v == null ? '' : v;
+  }
+  function getAnswers(){
+    var a = {};
+    QIDS.forEach(function(q){ a[q] = {}; QPARTS[q].forEach(function(p){ a[q][p] = getPart(q, p); }); });
+    return a;
+  }
+  function setAnswers(a){
+    a = a || {};
+    QIDS.forEach(function(q){ QPARTS[q].forEach(function(p){ setPart(q, p, (a[q] || {})[p]); }); });
+    refresh();
+  }
+  function partFilled(v){ return Array.isArray(v) ? v.length > 0 : String(v || '').replace(/_/g, '').trim() !== ''; }
+  function isAnswered(q){
+    return graded(q).every(function(p){
+      var v = getPart(q, p);
+      if (p === 'd') return String(v).indexOf('_') < 0;
+      return partFilled(v);
+    });
+  }
+  function lbl(q){ return LESSON[q.split('-')[0]] + ' #' + q.split('-')[1]; }
+
+  function refresh(){
+    var n = 0;
+    QIDS.forEach(function(q){ if (isAnswered(q)) n++; });
+    document.getElementById('count').textContent = n;
+    document.getElementById('total').textContent = QIDS.length;
+    document.getElementById('fill').style.width = (n / QIDS.length * 100) + '%';
+  }
+
+  /* ================= saving ================= */
+  var submitted = false, lastResults = null, startedAt = null, pendingSid = null;
+  function lsGet(){ try { return JSON.parse(localStorage.getItem(LS_KEY) || 'null'); } catch(e){ return null; } }
+  function lsSet(v){ try { localStorage.setItem(LS_KEY, JSON.stringify(v)); } catch(e){} }
+  function markStart(){ if (!startedAt) startedAt = new Date().toISOString(); }
+  var autoTimer = null;
+  function scheduleAutoSave(){
+    if (submitted) return;
+    clearTimeout(autoTimer);
+    autoTimer = setTimeout(function(){
+      if (submitted || !nameEl.value.trim() || (ROSTER.length && !findStudent(nameEl.value, clsEl.value))) return;
+      api('/api/save', { name:nameEl.value, cls:clsEl.value, answers:getAnswers(), auto:true })
+        .then(null, function(){});
+    }, 30000);
+  }
+  function saveLocal(){ lsSet({ name:nameEl.value, cls:clsEl.value || pendingCls, answers:getAnswers(), submitted:submitted, results:lastResults, startedAt:startedAt }); }
+  function changed(){ markStart(); refresh(); saveLocal(); scheduleAutoSave(); status(''); }
+
+  var statusEl = document.getElementById('status');
+  function status(msg, err){ statusEl.textContent = msg || ''; statusEl.classList.toggle('err', !!err); }
+  function timeStr(iso){ try { return new Date(iso).toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'}); } catch(e){ return ''; } }
+
+  /* ================= typing & tapping ================= */
+  document.querySelectorAll('.page input.ans').forEach(function(inp){
+    inp.addEventListener('input', function(){
+      var v = inp.value.replace(/[^0-9,]/g, '');
+      if (v !== inp.value) inp.value = v;
+      changed();
+    });
+    inp.addEventListener('keydown', function(e){ if (e.key === 'Enter'){ e.preventDefault(); focusAfter(inp); } });
+  });
+  document.querySelectorAll('.page textarea').forEach(function(t){ t.addEventListener('input', function(){ saveLocal(); scheduleAutoSave(); }); });
+  document.querySelectorAll('.page .choices, .page .mc').forEach(function(g){
+    g.addEventListener('click', function(e){
+      var b = e.target.closest('button'); if (!b || submitted) return;
+      var on = b.getAttribute('aria-pressed') === 'true';
+      g.querySelectorAll('button').forEach(function(x){ x.setAttribute('aria-pressed', 'false'); });
+      b.setAttribute('aria-pressed', String(!on));
+      changed();
+    });
+  });
+  document.querySelectorAll('.page .ms').forEach(function(g){
+    g.addEventListener('click', function(e){
+      var b = e.target.closest('button'); if (!b || submitted) return;
+      b.setAttribute('aria-pressed', String(b.getAttribute('aria-pressed') !== 'true'));
+      changed();
+    });
+  });
+  function focusAfter(el){
+    var list = typing(), i = list.indexOf(el);
+    var q = el.dataset.q;
+    for (var k = i + 1; k < list.length; k++){ if (list[k].dataset.q !== q || el.classList.contains('digit') === false){ list[k].focus(); return; } }
+  }
+
+  /* ---- digit boxes ---- */
+  var dirOf = {}, typedOrder = {};
+  function rowOf(el){
+    return boxes(el.dataset.q, 'd').filter(function(e){ return e.dataset.row === el.dataset.row; })
+      .sort(function(a, b){ return a.dataset.col - b.dataset.col; });
+  }
+  function rowsOf(q){
+    var seen = [];
+    boxes(q, 'd').forEach(function(e){ if (seen.indexOf(+e.dataset.row) < 0) seen.push(+e.dataset.row); });
+    return seen.sort(function(a, b){ return a - b; });
+  }
+  function pickInRow(row, dir){
+    var empty = row.filter(function(e){ return !e.value; });
+    if (!empty.length) return null;
+    return dir === 'rtl' ? empty[empty.length - 1] : empty[0];
+  }
+  function nextQuestionInput(q){
+    var list = typing(), last = -1;
+    list.forEach(function(e, i){ if (e.dataset.q === q) last = i; });
+    for (var k = last + 1; k < list.length; k++){
+      var t = list[k];
+      if (t.classList.contains('digit')){
+        var row = rowOf(t), d = dirOf[q] || 'rtl', pick = pickInRow(row, d);
+        return pick || t;
+      }
+      return t;
+    }
+    return null;
+  }
+  function afterDigit(inp){
+    var q = inp.dataset.q, row = rowOf(inp), i = row.indexOf(inp);
+    var left = row[i - 1], right = row[i + 1];
+    if (left && !left.value && (!right || right.value)) dirOf[q] = 'rtl';
+    else if (right && !right.value && (!left || left.value)) dirOf[q] = 'ltr';
+    var dir = dirOf[q] || 'rtl', target = null, k;
+    if (dir === 'rtl'){ for (k = i - 1; k >= 0; k--) if (!row[k].value){ target = row[k]; break; } }
+    else { for (k = i + 1; k < row.length; k++) if (!row[k].value){ target = row[k]; break; } }
+    if (!target) target = pickInRow(row, dir);
+    if (!target){
+      var rows = rowsOf(q), cur = rows.indexOf(+inp.dataset.row);
+      var order = rows.slice(cur + 1).concat(rows.slice(0, cur));
+      for (k = 0; k < order.length && !target; k++){
+        var r = order[k];
+        target = pickInRow(boxes(q, 'd').filter(function(e){ return +e.dataset.row === r; })
+          .sort(function(a, b){ return a.dataset.col - b.dataset.col; }), dir);
+      }
+    }
+    if (!target) target = nextQuestionInput(q);
+    if (target) target.focus();
+  }
+  function arrowMove(inp, key){
+    var row = rowOf(inp), i = row.indexOf(inp);
+    if (key === 'ArrowLeft' && row[i - 1]) return row[i - 1].focus();
+    if (key === 'ArrowRight' && row[i + 1]) return row[i + 1].focus();
+    if (key === 'ArrowUp' || key === 'ArrowDown'){
+      var rows = rowsOf(inp.dataset.q), r = rows.indexOf(+inp.dataset.row) + (key === 'ArrowUp' ? -1 : 1);
+      if (r < 0 || r >= rows.length) return;
+      var cand = boxes(inp.dataset.q, 'd').filter(function(e){ return +e.dataset.row === rows[r]; });
+      cand.sort(function(a, b){ return Math.abs(a.dataset.col - inp.dataset.col) - Math.abs(b.dataset.col - inp.dataset.col); });
+      cand[0].focus();
+    }
+  }
+  document.querySelectorAll('.page input.digit').forEach(function(inp){
+    var carry = inp.classList.contains('carry');
+    inp.addEventListener('focus', function(){ inp.select(); });
+    inp.addEventListener('input', function(){
+      var v = inp.value.replace(/[^0-9]/g, '').slice(-1);
+      inp.value = v;
+      if (carry){ saveLocal(); return; }
+      var q = inp.dataset.q, hist = typedOrder[q] = (typedOrder[q] || []).filter(function(e){ return e !== inp; });
+      if (v) hist.push(inp);
+      changed();
+      if (v) afterDigit(inp);
+    });
+    if (carry) return;
+    inp.addEventListener('keydown', function(e){
+      if (e.key === 'Enter'){ e.preventDefault(); var n = nextQuestionInput(inp.dataset.q); if (n) n.focus(); }
+      else if (e.key === 'Backspace' && !inp.value){
+        e.preventDefault();
+        var hist = (typedOrder[inp.dataset.q] || []).filter(function(b){ return b !== inp && b.value; });
+        if (hist.length) hist[hist.length - 1].focus();
+      }
+      else if (/^Arrow/.test(e.key)){ e.preventDefault(); arrowMove(inp, e.key); }
+    });
+  });
+
+  /* ================= saved work on another device ================= */
+  var offered = {};
+  function tryLoadServer(){
+    var name = nameEl.value.trim();
+    if (!name || submitted) return;
+    var key = (name + '|' + clsEl.value.trim()).toLowerCase();
+    if (offered[key]) return;
+    offered[key] = true;
+    var hasLocal = QIDS.some(isAnswered);
+    api('/api/load', { name: name, cls: clsEl.value.trim() }).then(function(res){
+      if (!res || !res.answers) return;
+      var any = QIDS.some(function(q){ var a = res.answers[q] || {}; return Object.keys(a).some(function(p){ return partFilled(a[p]); }); });
+      if (!any) return;
+      modal('Saved work found', 'You saved answers' + (res.savedAt ? ' at ' + timeStr(res.savedAt) : '') +
+        '. Load them?' + (hasLocal ? ' This replaces what is on the page now.' : ''), 'Load my work', 'No thanks')
+        .then(function(ok){ if (ok){ setAnswers(res.answers); saveLocal(); status('Saved work loaded.'); } });
+    }, function(){ offered[key] = false; });
+  }
+
+  /* ================= buttons ================= */
+  var saveBtn = document.getElementById('saveBtn'), submitBtn = document.getElementById('submitBtn'), restartBtn = document.getElementById('restartBtn');
+  function busy(b){ saveBtn.disabled = submitBtn.disabled = restartBtn.disabled = b; if (!b && submitted){ saveBtn.disabled = submitBtn.disabled = true; } }
+  function needName(){
+    var ok = nameEl.value.trim() && (!ROSTER.length || findStudent(nameEl.value, clsEl.value)) && (!CLASSES.length || clsEl.value);
+    if (ok) return false;
+    modal('Choose your name', 'Type the first letters of your name on the Name line, then tap your name in the list.', 'OK', null)
+      .then(function(){ window.scrollTo({ top: 0, behavior: 'smooth' }); nameEl.focus(); });
+    return true;
+  }
+
+  saveBtn.addEventListener('click', function(){
+    saveLocal();
+    if (needName()) return;
+    busy(true); status('Saving…');
+    api('/api/save', { name:nameEl.value, cls:clsEl.value, answers:getAnswers() })
+      .then(function(r){ busy(false); status('Progress saved at ' + timeStr(r.savedAt) + '. You can come back and finish later.'); },
+            function(){ busy(false); status('Could not save online right now. Your work is still saved on this device — try again in a minute.', true); });
+  });
+
+  submitBtn.addEventListener('click', function(){
+    if (needName()) return;
+    var blank = QIDS.filter(function(q){ return !isAnswered(q); });
+    var msg = !blank.length ? 'Have you checked your work? You cannot change your answers after you submit.'
+      : blank.length <= 6 ? 'You have not finished: ' + blank.map(lbl).join(', ') + '. Submit anyway?'
+      : 'You have not finished ' + blank.length + ' questions. Submit anyway?';
+    modal('Submit assignment?', msg, 'Submit', 'Go back').then(function(ok){
+      if (!ok) return;
+      busy(true); status('Submitting…');
+      if (!pendingSid) pendingSid = newId();
+      api('/api/submit', { name:nameEl.value, cls:clsEl.value, answers:getAnswers(), startedAt:startedAt, sid:pendingSid })
+        .then(function(res){
+          pendingSid = null;
+          submitted = true; lastResults = res; clearTimeout(autoTimer);
+          showResults(res); saveLocal(); busy(false);
+          status('Submitted at ' + timeStr(res.submittedAt) + '.');
+          var place = res.finishPosition ? ' You were number ' + res.finishPosition + ' to finish in ' + clsEl.value + '.' : '';
+          modal('Assignment submitted!', 'Your answers were sent to your teacher. You got ' + res.score + ' out of ' + res.total + ' correct.' + place, 'See my results', null);
+        }, function(err){
+          busy(false);
+          var m = (err && err.message) || '';
+          status(/choose your name/i.test(m) ? m : 'Not sent yet — the server is busy or the internet dropped. Your answers are safe on this page. Wait a moment and press Submit again.', true);
+        });
+    });
+  });
+
+  restartBtn.addEventListener('click', function(){
+    clearTimeout(autoTimer);
+    modal('Restart?', 'This clears every answer on the page so you can start again.', 'Clear and restart', 'Cancel').then(function(ok){
+      if (!ok) return;
+      submitted = false; lastResults = null; startedAt = null;
+      clearResults(); setAnswers({}); saveLocal();
+      if (nameEl.value.trim()){
+        api('/api/save', { name:nameEl.value, cls:clsEl.value, answers:{} }).then(null, function(){});
+      }
+      busy(false); status('Worksheet cleared.');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  });
+
+  /* ================= results ================= */
+  function lock(b){
+    allInputs().forEach(function(e){ e.disabled = b; });
+    nameEl.disabled = clsEl.disabled = b;
+    document.body.classList.toggle('locked', b);
+  }
+  function paint(q, p, ok){
+    els(q, p).forEach(function(el){
+      if (el.classList.contains('choices') || el.classList.contains('mc')){
+        var on = el.querySelector('[aria-pressed="true"]'); if (on) on.classList.add(ok ? 'ok' : 'bad');
+      } else if (el.classList.contains('ms')){ el.classList.add(ok ? 'ok' : 'bad'); }
+      else el.classList.add(ok ? 'ok' : 'bad');
+    });
+  }
+  function showResults(res){
+    lock(true);
+    QIDS.forEach(function(q){
+      var r = res.results[q] || {}, lab = document.querySelector('[data-num="' + q + '"]'), fx = document.getElementById('fix-' + q);
+      if (!r.counted){
+        lab.classList.add('mark-off');
+        fx.className = 'fix off'; fx.textContent = 'Not marked'; fx.hidden = false;
+        return;
+      }
+      Object.keys(r.parts || {}).forEach(function(p){ paint(q, p, r.parts[p]); });
+      if (r.right){ lab.classList.add('mark-ok'); fx.hidden = true; }
+      else {
+        lab.classList.add(r.blank ? 'mark-blank' : 'mark-bad');
+        fx.className = 'fix'; fx.textContent = 'Correct answer: ' + (r.display || ''); fx.hidden = !r.display;
+      }
+    });
+    var s = document.getElementById('summary');
+    s.innerHTML = '<div class="card"><div class="score">' + res.score + ' / ' + res.total + ' correct</div>' +
+      'Submitted' + (res.submittedAt ? ' at ' + timeStr(res.submittedAt) : '') + ' · Attempt ' + res.attempt +
+      '. Red answers show the correct answer — go back to your notebook and find the mistake. Questions marked “Not marked” are not in your score.</div>';
+    s.hidden = false;
+  }
+  function clearResults(){
+    lock(false);
+    document.querySelectorAll('.page .ok, .page .bad').forEach(function(e){ e.classList.remove('ok', 'bad'); });
+    document.querySelectorAll('.num').forEach(function(n){ n.classList.remove('mark-ok', 'mark-bad', 'mark-blank', 'mark-off'); });
+    document.querySelectorAll('.fix').forEach(function(f){ f.hidden = true; f.className = 'fix'; });
+    var s = document.getElementById('summary'); s.hidden = true; s.innerHTML = '';
+  }
+
+  /* ================= start ================= */
+  var saved = lsGet();
+  if (saved){
+    nameEl.value = saved.name || ''; pendingCls = saved.cls || ''; startedAt = saved.startedAt || null;
+    setAnswers(saved.answers || {});
+    if (saved.submitted && saved.results){ submitted = true; lastResults = saved.results; showResults(saved.results); busy(false); }
+  }
+  refresh();
+  loadRoster();
+})();
+</script>
+</body>
+</html>
